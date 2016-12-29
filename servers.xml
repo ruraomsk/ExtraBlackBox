@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<table>
+    <format maxRecords="2147483647">
+        <fields>
+            <field description="Имя Сервера" name="server" type="S">
+                <defaultValue/>
+            </field>
+            <field description="Описание Сервера" name="description" type="S">
+                <defaultValue/>
+            </field>
+            <field description="Драйвер базы данных сервера" name="JDBC" type="S">
+                <defaultValue/>
+            </field>
+            <field description="Адрес базы данных сервера" name="url" type="S">
+                <defaultValue/>
+            </field>
+            <field description="Пользователь" name="user" type="S">
+                <defaultValue/>
+            </field>
+            <field description="Пароль" name="password" type="S">
+                <defaultValue/>
+            </field>
+        </fields>
+    </format>
+    <records>
+        <record>
+            <value name="server">local</value>
+            <value name="description">по умолчанию</value>
+            <value name="JDBC">org.postgresql.Driver</value>
+            <value name="url">jdbc:postgresql://127.0.0.1:5433/testbase</value>
+            <value name="user">postgres</value>
+            <value name="password">162747</value>
+        </record>
+    </records>
+</table>
