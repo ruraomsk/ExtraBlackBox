@@ -41,19 +41,18 @@ public class DoSelectData extends SwingWorker<Integer, Integer> {
     DataTable setup = null;
     DataTable serveses;
     DataTable choiceTable;
-JProgressBar progBar;
+    JProgressBar progBar;
     private final Color[] colordefault
             = {
                 RED, BLUE, CYAN, GRAY, GREEN, MAGENTA, ORANGE, PINK, YELLOW};
     int color = -1;
 
-    public DoSelectData(DataTable serveses, DataTable choiceTable,JProgressBar progBar) {
+    public DoSelectData(DataTable serveses, DataTable choiceTable, JProgressBar progBar) {
         this.serveses = serveses;
         this.choiceTable = choiceTable;
-        this.progBar=progBar;
+        this.progBar = progBar;
 
     }
-
 
     public DataTable getResult() {
         return result;
@@ -73,15 +72,15 @@ JProgressBar progBar;
 
     @Override
     protected Integer doInBackground() throws Exception {
-        
+
         result = NeedsTables.mkResultDataTable();
         setup = NeedsTables.mkSetupDataTable();
         ParamSQL param = new ParamSQL();
         String fullname = "";
-                            progBar.setIndeterminate(false);
-                    progBar.setMinimum(0);
-                    progBar.setMaximum(choiceTable.getRecordCount());
-                    int count=0;
+        progBar.setIndeterminate(false);
+        progBar.setMinimum(0);
+        progBar.setMaximum(choiceTable.getRecordCount());
+        int count = 0;
         for (DataRecord chrec : choiceTable) {
             progBar.setValue(count++);
             StrongSql sql = null;
@@ -93,7 +92,7 @@ JProgressBar progBar;
                     param.password = srvrec.getString("password");
                     param.myDB = chrec.getString("base");
                     sql = new StrongSql(param);
-                    fullname = chrec.getString("server") + "/" + chrec.getString("base") + "/" + chrec.getString("name");
+                    fullname =  chrec.getString("name")+ "/" + chrec.getString("base") + "/" +chrec.getString("server") ;
                     break;
                 }
             }
@@ -110,10 +109,11 @@ JProgressBar progBar;
             ArrayList<Integer> ari = new ArrayList<>();
             ari.add(dsValue.getId());
             ArrayList<SetValue> svm = sql.seekData(new Timestamp(SuperExtra.datefrom.getTime()), new Timestamp(SuperExtra.dateto.getTime()), ari);
-            float max = MIN_VALUE;
+            float max = -MAX_VALUE;
             float min = MAX_VALUE;
             DataRecord recset = setup.addRecord();
             recset.setValue("name", fullname);
+            recset.setValue("choice",false);
             for (SetValue sv : svm) {
                 DataRecord res = result.addRecord();
                 res.setValue("name", fullname);
@@ -131,11 +131,15 @@ JProgressBar progBar;
                     case 3:
                         value = (float) ((long) sv.getValue());
                         break;
+                    case 4:
+                        value=(float)((int) sv.getValue());
+                        break;
                 }
                 res.setValue("value", value);
                 res.setValue("time", new Date(sv.getTime()));
-                max = max(max, value);
-                min = min(min, value);
+                max = max<value?value:max;
+                min = min>value?value:min;
+                recset.setValue("choice",true);
             }
             recset.setValue("max", max);
             recset.setValue("min", min);
