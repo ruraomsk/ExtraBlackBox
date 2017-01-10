@@ -8,19 +8,8 @@ package ru.list.ruraomsk.extra;
 import com.tibbo.aggregate.common.datatable.DataRecord;
 import com.tibbo.aggregate.common.datatable.DataTable;
 import java.awt.Color;
-import static java.awt.Color.BLUE;
-import static java.awt.Color.CYAN;
-import static java.awt.Color.GRAY;
-import static java.awt.Color.GREEN;
-import static java.awt.Color.MAGENTA;
-import static java.awt.Color.ORANGE;
-import static java.awt.Color.PINK;
-import static java.awt.Color.RED;
-import static java.awt.Color.YELLOW;
+import static java.awt.Color.*;
 import static java.lang.Float.MAX_VALUE;
-import static java.lang.Float.MIN_VALUE;
-import static java.lang.Math.max;
-import static java.lang.Math.min;
 import java.sql.Date;
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -106,9 +95,7 @@ public class DoSelectData extends SwingWorker<Integer, Integer> {
             if (dsValue == null) {
                 break;
             }
-            ArrayList<Integer> ari = new ArrayList<>();
-            ari.add(dsValue.getId());
-            ArrayList<SetValue> svm = sql.seekData(new Timestamp(SuperExtra.datefrom.getTime()), new Timestamp(SuperExtra.dateto.getTime()), ari);
+            ArrayList<SetValue> svm = sql.seekData(new Timestamp(SuperExtra.datefrom.getTime()), new Timestamp(SuperExtra.dateto.getTime()), dsValue.getId());
             float max = -MAX_VALUE;
             float min = MAX_VALUE;
             DataRecord recset = setup.addRecord();
@@ -132,7 +119,7 @@ public class DoSelectData extends SwingWorker<Integer, Integer> {
                         value = (float) ((long) sv.getValue());
                         break;
                     case 4:
-                        value=(float)((int) sv.getValue());
+                        value=(float)( (byte)sv.getValue()&0xff);
                         break;
                 }
                 res.setValue("value", value);
@@ -140,6 +127,7 @@ public class DoSelectData extends SwingWorker<Integer, Integer> {
                 max = max<value?value:max;
                 min = min>value?value:min;
                 recset.setValue("choice",true);
+                
             }
             recset.setValue("max", max);
             recset.setValue("min", min);
