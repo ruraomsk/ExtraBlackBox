@@ -74,6 +74,8 @@ public class SerialChart extends ApplicationFrame
                 {
                     continue;
                 }
+                if(dd.getDate("time").getTime()==0L) continue;
+                
                 ts.addOrUpdate(new FixedMillisecond(dd.getDate("time")), dd.getFloat("value"));
             }
             dataset.addSeries(ts);
