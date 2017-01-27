@@ -21,14 +21,10 @@
     </format>
     <records>
         <record>
-            <value name="name">U2_TIME_FRACT/data/local</value>
-            <value name="max">1.0</value>
-            <value name="color">#FF0000FF</value>
-        </record>
-        <record>
             <value name="name">U2_TIME_SEC/data/local</value>
-            <value name="max">63138.0</value>
-            <value name="color">#0000FFFF</value>
+            <value name="max">62891.0</value>
+            <value name="min">60153.0</value>
+            <value name="color">#FF0000FF</value>
         </record>
     </records>
 </table>
