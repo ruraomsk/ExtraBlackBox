@@ -16,6 +16,8 @@ import static java.text.DateFormat.MEDIUM;
 import static java.text.DateFormat.SHORT;
 import static java.text.DateFormat.getDateTimeInstance;
 import static java.text.DateFormat.getTimeInstance;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
@@ -62,7 +64,16 @@ DoSelectData doSelectData;
             doSelectData=new DoSelectData(SuperExtra.serversTable,SuperExtra.choiceTable,progress);
             doSelectData.execute();
             bOk.setVisible(false);
+            while (!doSelectData.isDone()){
+                try {
+                    Thread.sleep(1000L);
+                } catch (InterruptedException ex) {
+                    break;
+                }
+            }
+                    
             bReady.setVisible(true);
+            
             SuperExtra.appendMessage("Изменен интервал даты и времени");
         });
         JButton bCancel=new JButton("Отменить");

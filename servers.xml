@@ -27,7 +27,7 @@
             <value name="server">local</value>
             <value name="description">по умолчанию</value>
             <value name="JDBC">org.postgresql.Driver</value>
-            <value name="url">jdbc:postgresql://192.168.1.76:5432/vlrbase</value>
+            <value name="url">jdbc:postgresql://192.168.1.30:5432/vlrbase</value>
             <value name="user">postgres</value>
             <value name="password">162747</value>
         </record>

@@ -17,15 +17,12 @@ import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
 import static java.awt.GraphicsEnvironment.getLocalGraphicsEnvironment;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import static java.lang.Integer.MAX_VALUE;
 import static java.lang.Math.min;
 import static java.lang.System.currentTimeMillis;
 import static java.lang.System.exit;
 import static java.lang.Thread.sleep;
 import java.util.Date;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JFrame;
 import static javax.swing.JFrame.EXIT_ON_CLOSE;
 import javax.swing.JMenu;
@@ -64,7 +61,8 @@ public class SuperExtra {
     static EditDT editsetup = null;
     static EditDT editservers = null;
     public static DataTable serversTable = null;
-    static ChartPanel chp=null;
+    static ChartPanel chp = null;
+
     /**
      * @param args the command line arguments
      * @throws java.lang.InterruptedException
@@ -184,13 +182,9 @@ public class SuperExtra {
             if (choiceTable.getRecordCount() == 0) {
                 return;
             }
-//            removeTab("Выбор")
-            frame.setVisible(false);
             central.removeAll();
             new EditDT(central, choiceTable, true);
-            frame.setVisible(true);
-//            pan.add(central,CENTER);
-//            frame.repaint();
+            central.revalidate();
         });
         workVars.add(viewChoiceMenu);
 
@@ -201,6 +195,7 @@ public class SuperExtra {
             new ChangeInterval(frame, 400, 200);
             headerFrame = "Работа с данными за период с " + Util.dateToStr(datefrom.getTime()) + " по " + Util.dateToStr(dateto.getTime());
             frame.setTitle(headerFrame);
+            frame.validate();
         });
         workDataBase.add(setTimeMenu);
 
@@ -213,9 +208,8 @@ public class SuperExtra {
                 return;
             }
             central.removeAll();
-            frame.setVisible(false);
             new EditDT(central, resultTable, true);
-            frame.setVisible(true);
+            central.revalidate();
         });
         workDataBase.add(viewResult);
         JMenuItem viewSetup = new JMenuItem("Посмотреть сводную таблицу");
@@ -227,9 +221,8 @@ public class SuperExtra {
                 return;
             }
             central.removeAll();
-            frame.setVisible(false);
             editsetup = new EditDT(central, setupTable, false);
-            frame.setVisible(true);
+            central.revalidate();
         });
         workDataBase.add(viewSetup);
         JMenuItem saveData = new JMenuItem("Сохранить результат");
@@ -256,9 +249,11 @@ public class SuperExtra {
         JMenu reportMenu = new JMenu("Отчеты");
         JMenuItem graphMenu = new JMenuItem("Графики");
         graphMenu.addActionListener((ActionEvent evt) -> {
-            if(resultTable==null) return;
+            if (resultTable == null) {
+                return;
+            }
             SerialChart sc = new SerialChart(resultTable, setupTable);
-            while(sc.isWorking()){
+            while (sc.isWorking()) {
                 try {
                     Thread.sleep(1000L);
                 } catch (InterruptedException ex) {
@@ -267,26 +262,26 @@ public class SuperExtra {
             }
             chp = new ChartPanel(sc.chart);
             central.removeAll();
-            frame.setVisible(false);
             central.add(chp);
-            central.repaint();
-            frame.setVisible(true);
+            central.revalidate();
         });
         reportMenu.add(graphMenu);
         JMenuItem printMenu = new JMenuItem("Таблица");
         printMenu.addActionListener((ActionEvent evt) -> {
-            if(resultTable==null) return;
-            frame.setVisible(false);
+            if (resultTable == null) {
+                return;
+            }
             central.removeAll();
-            TextReport txtr=new TextReport(central,resultTable, setupTable, datefrom, dateto);
-            while(txtr.isWorking()){
+            TextReport txtr = new TextReport(central, resultTable, setupTable, datefrom, dateto);
+            while (txtr.isWorking()) {
                 try {
                     Thread.sleep(1000L);
                 } catch (InterruptedException ex) {
                     break;
                 }
             }
-            frame.setVisible(true);
+            central.revalidate();
+
         });
         reportMenu.add(printMenu);
         menu.add(reportMenu);
