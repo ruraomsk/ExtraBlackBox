@@ -3,6 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
+ 
 package ru.list.ruraomsk.extra;
 
 import java.awt.BorderLayout;
